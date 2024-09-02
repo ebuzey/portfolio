@@ -1,0 +1,115 @@
+---
+// Importa componentes que se encargarán de mostrar diagramas o código
+import Diagram from '../components/Diagram.astro';
+import CodeSnippet from '../components/CodeSnippet.astro';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>Shopify + Pub-Sub</title>
+    <link rel="stylesheet" href="/src/css/styles.css">
+  </head>
+
+  <body>
+    <div class="content-container">
+      <h1>Shopify + Google Cloud Pub/Sub Integration</h1>
+      <p>In this project, I integrated Shopify with Google Cloud Pub/Sub to handle product updates...</p>
+  
+
+      <!-- Inserción de video desde YouTube 
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/oSP1XChrHQ0" 
+          title="Shopify Integration Video"  
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>-->
+
+      <div class="diagram-container">
+        <Diagram path="/images/projects/pub-sub/pub-sub-flow-dark.png" altText="Diagrama de Integración de Shopify" />
+      </div>
+
+      <div class="code-container">
+        <CodeSnippet title="Shopify GraphiQL App" code={`
+          Code:
+          ----
+          mutation pubSubWebhookSubscriptionCreate(
+          $topic: WebhookSubscriptionTopic!, $webhookSubscription: PubSubWebhookSubscriptionInput!) {
+              pubSubWebhookSubscriptionCreate(
+                  topic: $topic
+                  webhookSubscription: $webhookSubscription
+              ) {
+                  userErrors {
+                  field
+                  message
+                  }
+                  webhookSubscription {
+                  id
+                  format
+                  metafieldNamespaces
+                  topic
+                  endpoint {
+                      ... on WebhookPubSubEndpoint {
+                      pubSubProject
+                      pubSubTopic
+                      }
+                  }
+                  }
+              }
+          }
+
+          Variables:
+          ---------
+          {
+              "topic": "PRODUCTS_UPDATE",
+              "webhookSubscription": {
+                  "pubSubProject": "project-name",
+                  "pubSubTopic": "topic-name"
+              }
+          }
+        `} />
+
+        <CodeSnippet title="Google Cloud | Cloud Function" code={`
+          import base64
+          import json
+          import requests
+          import logging
+
+          logging.basicConfig(level=logging.INFO)
+
+          URL = "endpoint"
+          HEADERS = {
+              'accept': '*/*',
+              'Content-Type': 'application/json'
+          }
+
+          def main(event, context):
+              """Triggered from a message on a Cloud Pub/Sub topic.
+              Args:
+                  event (dict): Event payload.
+                  context (google.cloud.functions.Context): Metadata for the event.
+              """
+              try:
+                  pubsub_message = base64.b64decode(event['data']).decode('utf-8')
+                  pubsub_dict = json.loads(pubsub_message)
+                  logging.info(f"Received message: {pubsub_dict}")
+                  send_data(pubsub_dict)
+              except Exception as e:
+                  logging.error(f"Error decoding Pub/Sub message: {e}")
+
+          def send_data(values):
+              try:
+                  response = requests.post(URL, headers=HEADERS, json=values)
+                  if response.status_code == 200:
+                      logging.info(f"Successfully sent data: {response.text}")
+                  else:
+                      logging.error(f"Error {response.status_code}: {response.content}")
+              except Exception as e:
+                  logging.error(f"Error sending request to API: {e}")
+        `} />
+
+      </div>
+    </div>
+  </body>
+</html>

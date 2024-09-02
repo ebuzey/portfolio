@@ -1,0 +1,31 @@
+---
+const projects = [
+  {
+    title: "Shopify integration with Google Cloud Pub/Sub",
+    description: "Summary showing how to integrate Shopify with Google Cloud Pub/Sub to handle product updates.",
+    link: "/pub-sub",
+    image: "/images/projects/pub-sub/pub-sub-title.webp"
+  },
+  {
+    title: "CUPS Generator",
+    description: "A tool to generate CUPS (Código Unificado de Punto de Suministro) for energy supply points in Spain.",
+    link: "https://ebuzey.github.io/cups-generator/",
+    image: "/images/projects/cups/cups.webp"
+  }
+];
+---
+
+<ul class="project-list">
+  {projects.map(project => (
+    <li>
+      <a href={project.link} target="_blank" rel="noopener noreferrer">
+        <img src={project.image} alt={project.title} />
+        <div>
+          <h3>{project.title}</h3>
+          <p>{project.description}</p>
+        </div>
+      </a>
+    </li>
+  ))}
+</ul>
+

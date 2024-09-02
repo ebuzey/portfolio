@@ -1,0 +1,12 @@
+---
+const { title, code, language = "plaintext" } = Astro.props;
+---
+
+<div style="max-width: 80%; margin: 20px auto; background-color: #2d2d2d; border-radius: 8px; padding: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+  <pre style="margin: 0; overflow-x: auto; background-color: transparent;">
+    <code style="color: #f8f8f2; font-family: 'Fira Code', 'Courier New', monospace; font-size: 0.9rem;">
+      <h2>{title}</h2>
+      {code}
+    </code>
+  </pre>
+</div>

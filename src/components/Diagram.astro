@@ -1,0 +1,10 @@
+---
+const { path, altText = "Project Diagram", title = "Flow Chart", description = "" } = Astro.props;
+---
+
+<div style="max-width: 1200px; margin: 20px auto; padding: 20px; background-color: #2d2d2d; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+  <h2 style="font-size: 1.5rem; color: #faf9f9; text-align: center;">{title}</h2>
+  <!-- Muestra la imagen del diagrama -->
+  <img src={path} alt={altText} style="max-width: 100%; border-radius: 8px; margin: 10px 0;" />
+  {description && <p style="font-size: 1rem; color: #666; text-align: center;">{description}</p>}
+</div>

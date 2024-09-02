@@ -1,0 +1,276 @@
+  /* Estilos globales */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #2e3047; /* Fondo oscuro */
+  color: #707793; /* Texto claro */
+}
+
+
+/* Contenedor global para alinear textos principales */
+.content-container {
+  max-width: 900px; /* Ancho máximo consistente */
+  margin: 0 auto 40px auto; /* Centrado y margen inferior */
+  padding: 20px;
+  text-align: left; /* Alinea el texto a la izquierda */
+}
+
+/* Estilo para la foto de perfil */
+.profile-photo {
+  width: 80px; /* Tamaño reducido de la imagen */
+  height: 80px;
+  border-radius: 50%; /* Asegura que la imagen sea circular */
+  margin-right: 15px; /* Espacio entre la imagen y el texto */
+}
+
+
+/* Estilo del encabezado */
+h1 {
+  font-size: 2.5rem;
+  color: #3bba9c; /* Acento en el título */
+  margin-bottom: 20px;
+  text-align: left; /* Alinea el título a la izquierda */
+}
+
+p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  line-height: 1.6;
+  color: #e0e0e0;
+  text-align: left;
+  max-width: 100%; /* Asegura que los párrafos no excedan el contenedor */
+}
+
+/* Contenedores */
+.diagram-container,
+.code-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #3c3f58; /* Fondo del contenedor */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+  max-width: 1200px;
+}
+
+
+/* Contenedor de código específico */
+.code-container {
+  background-color: #43455c; /* Fondo del contenedor de código */
+  flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+}
+
+
+/* Estilo de la sección */
+section {
+  max-width: 900px;
+  margin: 40px auto;
+  background-color: #43455c; /* Fondo de la sección */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+}
+
+
+/* Texto */
+h2 {
+  text-align: center;
+  color: #3bba9c; /* Acento en títulos de sección */
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+a {
+  color: #3bba9c; /* Color de los enlaces */
+  text-decoration: none;
+}
+
+
+/* Efecto hover en la tarjeta completa */
+a:hover {
+  transform: translateY(-5px); /* Desplaza la tarjeta hacia arriba */
+  text-decoration: none; /* Asegura que no haya subrayado */
+}
+
+
+/* Contenedor de video */
+.video-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #3c3f58; /* Fondo del contenedor */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+  max-width: 1200px;
+}
+
+
+/* Estilo para el iframe del video */
+.video-container iframe {
+  width: 100%; /* Ocupa el 100% del ancho del contenedor */
+  height: 500px; /* Altura fija para asegurar que sea visible */
+  border-radius: 8px; /* Opcional: para redondear las esquinas del video */
+}
+
+
+/* Estilo para la información de contacto */
+.contact-info {
+  display: flex;
+  gap: 20px; /* Espacio entre los iconos */
+  margin-top: 20px;
+}
+
+.contact-info a {
+  color: #3bba9c; /* Color de los enlaces */
+  font-size: 2rem; /* Tamaño de los iconos */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.contact-info a:hover {
+  color: #ffffff; /* Cambia el color al pasar el ratón */
+}
+
+
+/* Estilo para el botón de descarga de CV */
+.btn-download-cv {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #3bba9c; /* Fondo del botón */
+  color: #2e3047 !important; /* Forzar el color del texto */
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-download-cv:hover {
+  background-color: #2e3047; /* Cambia el fondo al pasar el ratón */
+  color: #ffffff !important; /* Forzar el color del texto en hover */
+}
+
+
+/* Estilo para la sección de descripción */
+section p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #e0e0e0; /* Gris claro para texto */
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+button {
+  background: #43455c;
+  cursor: pointer;
+  border: none;
+  padding: 16px 32px;
+  color: #FFF;
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+  border-radius: 12px;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    #3bba9c, #3c3f58, #2e3047, #43455c,
+    #3bba9c, #3c3f58, #2e3047, #43455c
+  );
+  background-size: 800%;
+  border-radius: 10px;
+  filter: blur(8px);
+  animation: glowing 20s linear infinite
+}
+
+@keyframes glowing {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap; /* Permite que las cards se envuelvan si no hay suficiente espacio en una fila */
+  justify-content: space-between; /* Asegura que haya espacio uniforme entre las cards */
+  gap: 20px; /* Espacio entre las cards */
+  margin-top: 40px; /* Espacio superior para separar de otros elementos */
+}
+
+.card {
+  background-color: #43455c;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  flex: 1 1 calc(33.333% - 20px); /* Asegura que cada card ocupe un tercio del contenedor, ajustando con gap */
+  box-sizing: border-box; /* Incluye padding y borde en el tamaño total de la card */
+}
+
+/* Estilo para la lista de proyectos */
+ul.project-list {
+  list-style: none;
+  padding: 0;
+}
+
+ul.project-list li {
+  margin-bottom: 20px;
+}
+
+ul.project-list a {
+  text-decoration: none;
+  display: block;
+  background-color: #3c3f58;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  color: #e0e0e0;
+  transition: transform 0.2s ease;
+}
+
+ul.project-list a:hover {
+  transform: translateY(-5px);
+}
+
+ul.project-list img {
+  width: 100px;
+  height: auto;
+  margin-right: 20px;
+  border-radius: 8px;
+}
+
+ul.project-list h3 {
+  margin-top: 0;
+  color: #3bba9c;
+}
+
+ul.project-list p {
+  color: #707793;
+  text-align: left;
+}
+
+/* Estilo para abrir enlaces en nueva pestaña */
+ul.project-list a[target="_blank"] {
+  cursor: pointer;
+}
