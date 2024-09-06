@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="es"> <head><meta charset="UTF-8"><title>Shopify + Pub-Sub</title><link rel="stylesheet" href="/src/css/styles.css"></head> <body> <div class="content-container"> <h1>Shopify + Google Cloud Pub/Sub Integration</h1> <p>In this project, I integrated Shopify with Google Cloud Pub/Sub to handle product updates...</p> <!-- Inserción de video desde YouTube 
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/oSP1XChrHQ0" 
+          title="Shopify Integration Video"  
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>--> <div class="diagram-container"> <div style="max-width: 1200px; margin: 20px auto; padding: 20px; background-color: #2d2d2d; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"> <h2 style="font-size: 1.5rem; color: #faf9f9; text-align: center;">Flow Chart</h2> <!-- Muestra la imagen del diagrama --> <img src="/images/projects/pub-sub/pub-sub-flow-dark.png" alt="Diagrama de Integración de Shopify" style="max-width: 100%; border-radius: 8px; margin: 10px 0;">  </div> </div> <div class="code-container"> <div style="max-width: 80%; margin: 20px auto; background-color: #2d2d2d; border-radius: 8px; padding: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"> <pre style="margin: 0; overflow-x: auto; background-color: transparent;">    <code style="color: #f8f8f2; font-family: 'Fira Code', 'Courier New', monospace; font-size: 0.9rem;">
+      <h2>Shopify GraphiQL App</h2>
+      
+          Code:
+          ----
+          mutation pubSubWebhookSubscriptionCreate(
+          $topic: WebhookSubscriptionTopic!, $webhookSubscription: PubSubWebhookSubscriptionInput!) {
+              pubSubWebhookSubscriptionCreate(
+                  topic: $topic
+                  webhookSubscription: $webhookSubscription
+              ) {
+                  userErrors {
+                  field
+                  message
+                  }
+                  webhookSubscription {
+                  id
+                  format
+                  metafieldNamespaces
+                  topic
+                  endpoint {
+                      ... on WebhookPubSubEndpoint {
+                      pubSubProject
+                      pubSubTopic
+                      }
+                  }
+                  }
+              }
+          }
+
+          Variables:
+          ---------
+          {
+              &quot;topic&quot;: &quot;PRODUCTS_UPDATE&quot;,
+              &quot;webhookSubscription&quot;: {
+                  &quot;pubSubProject&quot;: &quot;project-name&quot;,
+                  &quot;pubSubTopic&quot;: &quot;topic-name&quot;
+              }
+          }
+        
+    </code>
+  </pre> </div> <div style="max-width: 80%; margin: 20px auto; background-color: #2d2d2d; border-radius: 8px; padding: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"> <pre style="margin: 0; overflow-x: auto; background-color: transparent;">    <code style="color: #f8f8f2; font-family: 'Fira Code', 'Courier New', monospace; font-size: 0.9rem;">
+      <h2>Google Cloud | Cloud Function</h2>
+      
+          import base64
+          import json
+          import requests
+          import logging
+
+          logging.basicConfig(level=logging.INFO)
+
+          URL = &quot;endpoint&quot;
+          HEADERS = {
+              &#39;accept&#39;: &#39;*/*&#39;,
+              &#39;Content-Type&#39;: &#39;application/json&#39;
+          }
+
+          def main(event, context):
+              &quot;&quot;&quot;Triggered from a message on a Cloud Pub/Sub topic.
+              Args:
+                  event (dict): Event payload.
+                  context (google.cloud.functions.Context): Metadata for the event.
+              &quot;&quot;&quot;
+              try:
+                  pubsub_message = base64.b64decode(event[&#39;data&#39;]).decode(&#39;utf-8&#39;)
+                  pubsub_dict = json.loads(pubsub_message)
+                  logging.info(f&quot;Received message: {pubsub_dict}&quot;)
+                  send_data(pubsub_dict)
+              except Exception as e:
+                  logging.error(f&quot;Error decoding Pub/Sub message: {e}&quot;)
+
+          def send_data(values):
+              try:
+                  response = requests.post(URL, headers=HEADERS, json=values)
+                  if response.status_code == 200:
+                      logging.info(f&quot;Successfully sent data: {response.text}&quot;)
+                  else:
+                      logging.error(f&quot;Error {response.status_code}: {response.content}&quot;)
+              except Exception as e:
+                  logging.error(f&quot;Error sending request to API: {e}&quot;)
+        
+    </code>
+  </pre> </div> </div> </div> </body></html>
