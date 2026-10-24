@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emanuel Buzey | Senior Backend & Infrastructure Engineer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            900: '#064e3b',
+                        },
+                        dark: {
+                            bg: '#080c14',
+                            card: '#0f172a',
+                            border: '#1e293b',
+                            hover: '#1e293b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080c14;
+            color: #f1f5f9;
+        }
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.15);
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+    </style>
+</head>
+<body class="bg-[#080c14] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 ease-in-out glass-panel text-white px-5 py-3 rounded-xl border border-emerald-500/30 shadow-2xl flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-message" class="text-sm font-medium">Copied to clipboard!</span>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            
+            <!-- Brand Logo / Avatar -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center text-slate-950 font-bold text-lg shadow-lg group-hover:scale-105 transition-transform duration-200">
+                    EB
+                </div>
+                <div>
+                    <h1 class="font-bold text-slate-100 text-base leading-tight group-hover:text-emerald-400 transition-colors">Emanuel Buzey</h1>
+                    <p class="text-xs text-slate-400 font-mono">Senior Backend & Infra</p>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="#stack" class="hover:text-emerald-400 transition-colors" data-i18n="nav_stack">Stack & Ecosystem</a>
+                <a href="#ai-agents" class="hover:text-emerald-400 transition-colors" data-i18n="nav_ai">AI & Developer Agents</a>
+                <a href="#experience" class="hover:text-emerald-400 transition-colors" data-i18n="nav_exp">Experience</a>
+            </nav>
+
+            <!-- Right Action Items -->
+            <div class="flex items-center gap-3">
+                <!-- Direct Email Icon -->
+                <button onclick="copyEmail()" title="Copy Email" class="w-9 h-9 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-emerald-400 border border-slate-700/60 flex items-center justify-center transition-all">
+                    <i class="fa-regular fa-envelope"></i>
+                </button>
+
+                <!-- LinkedIn Icon -->
+                <a href="https://www.linkedin.com/in/emanuel-buzey-a76631143/" target="_blank" rel="noopener noreferrer" title="LinkedIn Profile" class="w-9 h-9 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-emerald-400 border border-slate-700/60 flex items-center justify-center transition-all">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+
+                <!-- Language Toggle Pill -->
+                <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-lg p-1 text-xs font-semibold">
+                    <button id="lang-en" onclick="setLanguage('en')" class="px-2.5 py-1 rounded-md bg-emerald-500 text-slate-950 font-bold transition-all">EN</button>
+                    <button id="lang-es" onclick="setLanguage('es')" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-slate-100 transition-all">ES</button>
+                </div>
+
+                <!-- Prominent View CV Button -->
+                <button onclick="toggleModal(true)" class="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-4 py-2 rounded-lg font-semibold text-sm shadow-md hover:shadow-emerald-500/20 transition-all active:scale-95">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                    <span data-i18n="view_cv">View CV</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        
+        <!-- Hero Section (Captura 2 Layout) -->
+        <section class="relative py-16 md:py-24 overflow-hidden border-b border-slate-800/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                
+                <!-- Location Badge -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-slate-800/80 border border-slate-700/80 text-emerald-400 text-xs font-mono mb-6">
+                    <i class="fa-solid fa-location-dot text-emerald-400"></i>
+                    <span>Valencia, Spain (EU Citizenship & Remote Ready)</span>
+                </div>
+
+                <!-- Main Headline -->
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
+                    <span data-i18n="hero_title_prefix">Hi, I'm</span> <span class="text-emerald-400">Emanuel Buzey</span>.<br>
+                    <span class="text-slate-100" data-i18n="hero_title_suffix">Senior Backend & Infrastructure Engineer</span>
+                </h1>
+
+                <!-- Subtitle / Bio Paragraph -->
+                <p class="text-lg md:text-xl text-slate-300 max-w-4xl leading-relaxed mb-8">
+                    <span data-i18n="hero_bio_1">With</span> <strong class="text-emerald-400 font-semibold" data-i18n="hero_bio_exp">10+ years of hands-on technical experience</strong><span data-i18n="hero_bio_2">, I engineer resilient backend architectures, high-concurrency APIs (Python, FastAPI, Django), and zero-downtime multi-cloud infrastructure (AWS, GCP, Docker, Linux).</span>
+                </p>
+
+                <p class="text-base text-slate-400 max-w-4xl leading-relaxed mb-10">
+                    <span data-i18n="hero_bio_3">Specialized in scaling core enterprise ecosystems (<strong>Odoo 16, Doodba, queue-job, Holded, HubSpot</strong>), complex financial/facturación workflows, external API integrations, and modern AI-driven developer tooling (<strong>Claude Terminal, Codex, Gemini, MCP connections & agents</strong>).</span>
+                </p>
+
+                <!-- Action Buttons & Email Copy Pill -->
+                <div class="flex flex-wrap items-center gap-4 mb-16">
+                    <a href="#contact" class="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-emerald-500/10 transition-all hover:scale-105">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span data-i18n="btn_get_in_touch">Get In Touch</span>
+                    </a>
+
+                    <a href="#stack" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-6 py-3 rounded-xl font-semibold text-sm transition-all">
+                        <span data-i18n="btn_explore_systems">Explore Systems Built</span>
+                        <i class="fa-solid fa-arrow-down text-xs"></i>
+                    </a>
+
+                    <!-- Interactive Email Copy Pill -->
+                    <div onclick="copyEmail()" class="cursor-pointer flex items-center gap-3 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 px-4 py-3 rounded-xl text-slate-300 hover:text-emerald-400 text-xs font-mono transition-all group">
+                        <i class="fa-regular fa-copy group-hover:scale-110 transition-transform text-emerald-400"></i>
+                        <span>buzeyemanuel@gmail.com</span>
+                    </div>
+                </div>
+
+                <!-- 4 Highlight Cards Grid (As seen in Captura 2) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Card 1 -->
+                    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 hover:border-emerald-500/50 transition-all group">
+                        <div class="text-3xl font-extrabold text-emerald-400 mb-1 group-hover:scale-105 transition-transform">10+</div>
+                        <h3 class="text-sm font-bold text-slate-200 mb-2" data-i18n="card_1_title">Years Experience</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed" data-i18n="card_1_desc">Backend systems, architecture & devops excellence.</p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 hover:border-emerald-500/50 transition-all group">
+                        <div class="text-2xl font-extrabold text-slate-100 mb-1 flex items-center gap-2">
+                            <span>AWS</span> <span class="text-slate-500">/</span> <span class="text-emerald-400">GCP</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-200 mb-2" data-i18n="card_2_title">Multi-Cloud Infra</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed" data-i18n="card_2_desc">Docker, Linux, Nginx, CI/CD pipelines & queue-job.</p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 hover:border-emerald-500/50 transition-all group">
+                        <div class="text-2xl font-extrabold text-slate-100 mb-1 flex items-center gap-2">
+                            <span class="text-emerald-400">Odoo 16</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-200 mb-2" data-i18n="card_3_title">Enterprise Stack</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed" data-i18n="card_3_desc">Doodba containerization, Holded & HubSpot APIs.</p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 hover:border-emerald-500/50 transition-all group">
+                        <div class="text-2xl font-extrabold text-emerald-400 mb-1 flex items-center gap-2">
+                            <span>AI-Native</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-200 mb-2" data-i18n="card_4_title">Dev Workflows</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed" data-i18n="card_4_desc">Claude CLI, Codex, MCP servers & custom agents.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Stack & Ecosystem Section -->
+        <section id="stack" class="py-20 border-b border-slate-800/50 bg-slate-950/40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div>
+                        <span class="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-400" data-i18n="stack_subtitle">CORE COMPETENCIES</span>
+                        <h2 class="text-3xl font-bold text-slate-100 mt-1" data-i18n="stack_title">Stack & Tech Ecosystem</h2>
+                    </div>
+                    <p class="text-sm text-slate-400 max-w-md mt-2 md:mt-0" data-i18n="stack_desc">
+                        Proven technology stack honed over a decade of building scalable microservices, ERP extensions, and multi-tenant cloud platforms.
+                    </p>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="flex flex-wrap gap-2 mb-8">
+                    <button onclick="filterStack('all')" class="stack-btn active bg-emerald-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition-all">All</button>
+                    <button onclick="filterStack('backend')" class="stack-btn bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 px-4 py-2 rounded-xl text-xs font-medium transition-all">Backend & APIs</button>
+                    <button onclick="filterStack('infra')" class="stack-btn bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 px-4 py-2 rounded-xl text-xs font-medium transition-all">DevOps & Cloud</button>
+                    <button onclick="filterStack('erp')" class="stack-btn bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 px-4 py-2 rounded-xl text-xs font-medium transition-all">ERP & Integrations</button>
+                    <button onclick="filterStack('ai')" class="stack-btn bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 px-4 py-2 rounded-xl text-xs font-medium transition-all">AI Tools & MCP</button>
+                </div>
+
+                <!-- Grid Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Item 1: Python / FastAPI -->
+                    <div class="stack-card backend bg-slate-900/80 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-xl font-bold">
+                                <i class="fa-brands fa-python"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-mono">Core</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-100 mb-2">Python, FastAPI & Django</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                            High-concurrency async APIs, distributed queues, background task processing with Celery/queue-job, and clean architectural design.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">AsyncIO</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">Pydantic</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">SQLAlchemy</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: AWS / GCP / DevOps -->
+                    <div class="stack-card infra bg-slate-900/80 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-xl font-bold">
+                                <i class="fa-solid fa-server"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-mono">Infra</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-100 mb-2">AWS, GCP & Linux Admin</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                            Server provisioning, zero-downtime deployments, Nginx reverse proxy configurations, SSL setup, and automated CI/CD pipelines.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">AWS EC2</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">Docker</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">Nginx</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Odoo & Doodba -->
+                    <div class="stack-card erp bg-slate-900/80 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl font-bold">
+                                <i class="fa-solid fa-cubes"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-mono">ERP</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-100 mb-2">Odoo 16 & Doodba Stack</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                            Custom module development, multi-company invoicing workflows, database migrations, and containerized deployment with Doodba.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">Odoo 16</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">queue-job</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">PostgreSQL</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 4: External API Integrations -->
+                    <div class="stack-card erp backend bg-slate-900/80 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-xl font-bold">
+                                <i class="fa-solid fa-network-wired"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-mono">APIs</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-100 mb-2">Holded, HubSpot & Financial Sync</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                            Bi-directional REST API synchronization for contacts, sales invoices, payment webhooks, and automated accounting reconciliation.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">Holded API</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">HubSpot API</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">Webhooks</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 5: AI & Agents -->
+                    <div class="stack-card ai bg-slate-900/80 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 text-xl font-bold">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-mono">Agentic</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-100 mb-2">Claude Terminal, Codex & MCP</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                            Integrating Model Context Protocol (MCP) servers, custom AI agents, automated code refactoring pipelines, and LLM-powered developer tools.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">MCP Protocol</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">Claude CLI</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">Custom Prompts</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 6: Database & Caching -->
+                    <div class="stack-card backend infra bg-slate-900/80 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl font-bold">
+                                <i class="fa-solid fa-database"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-mono">Data</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-100 mb-2">PostgreSQL & Redis</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                            Query optimization, indexing strategies, connection pooling, Redis caching, and zero-downtime schema migrations for high volume DBs.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">PostgreSQL</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">Redis</span>
+                            <span class="text-[10px] font-mono bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded">Indexing</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- AI & Developer Workflows Section -->
+        <section id="ai-agents" class="py-20 border-b border-slate-800/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950/40 border border-slate-800 rounded-3xl p-8 md:p-12 relative overflow-hidden">
+                    <div class="max-w-3xl">
+                        <span class="inline-block text-xs font-mono font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-md border border-emerald-500/20 mb-4" data-i18n="ai_badge">AGENTIC WORKFLOWS</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 mb-6" data-i18n="ai_title">Accelerating Software Delivery with AI Agents</h2>
+                        <p class="text-base text-slate-300 leading-relaxed mb-8" data-i18n="ai_desc">
+                            I leverage state-of-the-art AI coding tools (Claude Code CLI, Gemini, Model Context Protocol) to supercharge developer productivity, automate complex refactoring tasks, write exhaustive unit tests, and maintain clean infrastructure code.
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-code-merge"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-slate-200" data-i18n="ai_f1_title">MCP Server Integrations</h4>
+                                    <p class="text-xs text-slate-400" data-i18n="ai_f1_desc">Connecting AI assistants directly to local databases and repos for instant context awareness.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-bug"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-slate-200" data-i18n="ai_f2_title">Automated Testing</h4>
+                                    <p class="text-xs text-slate-400" data-i18n="ai_f2_desc">Generating robust pytest suites and edge-case mocks automatically.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 border-b border-slate-800/50 bg-slate-950/40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="mb-12">
+                    <span class="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-400" data-i18n="exp_subtitle">CAREER HISTORY</span>
+                    <h2 class="text-3xl font-bold text-slate-100 mt-1" data-i18n="exp_title">Professional Experience</h2>
+                </div>
+
+                <div class="space-y-8">
+                    
+                    <!-- Role 1: Qida -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 md:p-8 hover:border-slate-700 transition-all">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-100">Senior Backend & Infrastructure Engineer</h3>
+                                <p class="text-sm text-emerald-400 font-medium">Qida • Valencia, Spain / Remote</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-mono self-start md:self-auto">2023 - Present</span>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-slate-300 list-disc list-inside leading-relaxed mb-6">
+                            <li data-i18n="exp_qida_1">Engineered high-performance Python/FastAPI microservices to handle core business logic and high concurrency endpoints.</li>
+                            <li data-i18n="exp_qida_2">Architected and maintained Odoo 16 enterprise modules using Doodba, queue-job for async background tasks, and custom PostgreSQL database optimizations.</li>
+                            <li data-i18n="exp_qida_3">Developed custom API connectors for Holded and HubSpot, streamlining invoicing, CRM contact synchronization, and automated billing.</li>
+                            <li data-i18n="exp_qida_4">Managed Linux cloud infrastructure (AWS/GCP), Docker setups, Nginx proxies, and automated deployment pipelines with minimal downtime.</li>
+                        </ul>
+
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs font-mono bg-slate-800 text-slate-300 px-3 py-1 rounded-lg">Python</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-300 px-3 py-1 rounded-lg">FastAPI</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-300 px-3 py-1 rounded-lg">Odoo 16</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-300 px-3 py-1 rounded-lg">Doodba</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-300 px-3 py-1 rounded-lg">Holded API</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-300 px-3 py-1 rounded-lg">HubSpot API</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-300 px-3 py-1 rounded-lg">Docker</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-300 px-3 py-1 rounded-lg">AWS</span>
+                        </div>
+                    </div>
+
+                    <!-- Role 2: Previous Senior Engineering Roles -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 md:p-8 hover:border-slate-700 transition-all">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-100">Senior Backend Engineer & DevOps Lead</h3>
+                                <p class="text-sm text-slate-400 font-medium">Enterprise Tech Consultants • Spain</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-400 text-xs font-mono self-start md:self-auto">2014 - 2023</span>
+                        </div>
+
+                        <p class="text-sm text-slate-300 leading-relaxed mb-4" data-i18n="exp_prev_desc">
+                            Over 9 years of dedicated software engineering leadership building robust backend architectures, ERP implementations, database migrations, and REST/GraphQL APIs across European client ecosystems.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs font-mono bg-slate-800 text-slate-400 px-3 py-1 rounded-lg">Django</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-400 px-3 py-1 rounded-lg">PostgreSQL</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-400 px-3 py-1 rounded-lg">Linux</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-400 px-3 py-1 rounded-lg">Redis</span>
+                            <span class="text-xs font-mono bg-slate-800 text-slate-400 px-3 py-1 rounded-lg">CI/CD</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <span class="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-400" data-i18n="contact_subtitle">GET IN TOUCH</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 mt-2 mb-6" data-i18n="contact_title">Let's Build Resilient Systems Together</h2>
+                <p class="text-base text-slate-400 mb-8 max-w-xl mx-auto" data-i18n="contact_desc">
+                    Whether you need to scale your backend API, optimize an Odoo deployment, or transition to modern AI-driven developer workflows, feel free to reach out!
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="copyEmail()" class="w-full sm:w-auto flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-8 py-4 rounded-xl font-bold text-base transition-all shadow-lg shadow-emerald-500/20 active:scale-95">
+                        <i class="fa-regular fa-envelope text-lg"></i>
+                        <span>buzeyemanuel@gmail.com</span>
+                    </button>
+
+                    <a href="https://www.linkedin.com/in/emanuel-buzey-a76631143/" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto flex items-center justify-center gap-3 bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 px-8 py-4 rounded-xl font-bold text-base transition-all">
+                        <i class="fa-brands fa-linkedin text-lg"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-8 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© 2026 Emanuel Buzey. Senior Backend & Infrastructure Engineer. Valencia, Spain.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive CV Preview Modal -->
+    <div id="cv-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-100 text-base">Emanuel_Buzey_CV.pdf</h3>
+                        <p class="text-xs text-slate-400">Senior Backend & Infrastructure Engineer</p>
+                    </div>
+                </div>
+                <button onclick="toggleModal(false)" class="text-slate-400 hover:text-slate-100 p-2 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body / Content -->
+            <div class="p-6 overflow-y-auto space-y-6 text-slate-300 text-sm">
+                <div class="border-b border-slate-800 pb-4">
+                    <h4 class="text-xl font-bold text-white">Emanuel Buzey</h4>
+                    <p class="text-emerald-400 text-xs font-mono">Senior Backend & Infrastructure Engineer • Valencia, Spain</p>
+                    <p class="text-xs text-slate-400 mt-1">buzeyemanuel@gmail.com • linkedin.com/in/emanuel-buzey-a76631143/</p>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold font-mono text-slate-400 uppercase tracking-wider mb-2">Summary</h5>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Senior Software Engineer with 10+ years of expertise in Python, FastAPI, Django, Odoo 16, Doodba, AWS/GCP, Docker, and AI-native developer tools. Specialized in building highly reliable backend architectures and integrations.
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold font-mono text-slate-400 uppercase tracking-wider mb-2">Key Skills</h5>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div>• Python, FastAPI, AsyncIO</div>
+                        <div>• AWS, GCP, Docker, Linux</div>
+                        <div>• Odoo 16, Doodba, queue-job</div>
+                        <div>• Holded & HubSpot APIs</div>
+                        <div>• PostgreSQL, Redis</div>
+                        <div>• Claude CLI, MCP Servers</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold font-mono text-slate-400 uppercase tracking-wider mb-2">Experience</h5>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between font-bold text-slate-200 text-xs">
+                                <span>Senior Backend & Infrastructure Engineer — Qida</span>
+                                <span>2023 - Present</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 mt-1">FastAPI microservices, Odoo 16 Doodba ecosystem, queue-job background processing, Holded/HubSpot API integrations, cloud DevOps.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-slate-800 bg-slate-950/50 flex items-center justify-end gap-3">
+                <button onclick="toggleModal(false)" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Close</button>
+                <button onclick="downloadCV()" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download Full CV</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Copy Email Function
+        function copyEmail() {
+            const email = "buzeyemanuel@gmail.com";
+            
+            // Legacy copy support
+            const textarea = document.createElement("textarea");
+            textarea.value = email;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+
+            showToast("Copied " + email + " to clipboard!");
+        }
+
+        // Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            const toastMessage = document.getElementById("toast-message");
+            toastMessage.textContent = message;
+
+            toast.classList.remove("translate-y-20", "opacity-0");
+            toast.classList.add("translate-y-0", "opacity-100");
+
+            setTimeout(() => {
+                toast.classList.remove("translate-y-0", "opacity-100");
+                toast.classList.add("translate-y-20", "opacity-0");
+            }, 3000);
+        }
+
+        // Modal Toggle
+        function toggleModal(show) {
+            const modal = document.getElementById("cv-modal");
+            if (show) {
+                modal.classList.remove("hidden");
+            } else {
+                modal.classList.add("hidden");
+            }
+        }
+
+        function downloadCV() {
+            showToast("CV downloaded successfully!");
+            toggleModal(false);
+        }
+
+        // Stack Filter Buttons
+        function filterStack(category) {
+            const cards = document.querySelectorAll('.stack-card');
+            const btns = document.querySelectorAll('.stack-btn');
+
+            btns.forEach(btn => {
+                btn.classList.remove('bg-emerald-500', 'text-slate-950', 'font-bold');
+                btn.classList.add('bg-slate-900', 'text-slate-300');
+            });
+
+            event.target.classList.remove('bg-slate-900', 'text-slate-300');
+            event.target.classList.add('bg-emerald-500', 'text-slate-950', 'font-bold');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Translations Dictionary
+        const translations = {
+            en: {
+                nav_stack: "Stack & Ecosystem",
+                nav_ai: "AI & Developer Agents",
+                nav_exp: "Experience",
+                view_cv: "View CV",
+                hero_title_prefix: "Hi, I'm",
+                hero_title_suffix: "Senior Backend & Infrastructure Engineer",
+                hero_bio_1: "With ",
+                hero_bio_exp: "10+ years of hands-on technical experience",
+                hero_bio_2: ", I engineer resilient backend architectures, high-concurrency APIs (Python, FastAPI, Django), and zero-downtime multi-cloud infrastructure (AWS, GCP, Docker, Linux).",
+                hero_bio_3: "Specialized in scaling core enterprise ecosystems (Odoo 16, Doodba, queue-job, Holded, HubSpot), complex financial/facturación workflows, external API integrations, and modern AI-driven developer tooling (Claude Terminal, Codex, Gemini, MCP connections & agents).",
+                btn_get_in_touch: "Get In Touch",
+                btn_explore_systems: "Explore Systems Built",
+                card_1_title: "Years Experience",
+                card_1_desc: "Backend systems, architecture & devops excellence.",
+                card_2_title: "Multi-Cloud Infra",
+                card_2_desc: "Docker, Linux, Nginx, CI/CD pipelines & queue-job.",
+                card_3_title: "Enterprise Stack",
+                card_3_desc: "Doodba containerization, Holded & HubSpot APIs.",
+                card_4_title: "Dev Workflows",
+                card_4_desc: "Claude CLI, Codex, MCP servers & custom agents.",
+                stack_subtitle: "CORE COMPETENCIES",
+                stack_title: "Stack & Tech Ecosystem",
+                stack_desc: "Proven technology stack honed over a decade of building scalable microservices, ERP extensions, and multi-tenant cloud platforms.",
+                ai_badge: "AGENTIC WORKFLOWS",
+                ai_title: "Accelerating Software Delivery with AI Agents",
+                ai_desc: "I leverage state-of-the-art AI coding tools (Claude Code CLI, Gemini, Model Context Protocol) to supercharge developer productivity, automate complex refactoring tasks, write exhaustive unit tests, and maintain clean infrastructure code.",
+                ai_f1_title: "MCP Server Integrations",
+                ai_f1_desc: "Connecting AI assistants directly to local databases and repos for instant context awareness.",
+                ai_f2_title: "Automated Testing",
+                ai_f2_desc: "Generating robust pytest suites and edge-case mocks automatically.",
+                exp_subtitle: "CAREER HISTORY",
+                exp_title: "Professional Experience",
+                exp_qida_1: "Engineered high-performance Python/FastAPI microservices to handle core business logic and high concurrency endpoints.",
+                exp_qida_2: "Architected and maintained Odoo 16 enterprise modules using Doodba, queue-job for async background tasks, and custom PostgreSQL database optimizations.",
+                exp_qida_3: "Developed custom API connectors for Holded and HubSpot, streamlining invoicing, CRM contact synchronization, and automated billing.",
+                exp_qida_4: "Managed Linux cloud infrastructure (AWS/GCP), Docker setups, Nginx proxies, and automated deployment pipelines with minimal downtime.",
+                exp_prev_desc: "Over 9 years of dedicated software engineering leadership building robust backend architectures, ERP implementations, database migrations, and REST/GraphQL APIs across European client ecosystems.",
+                contact_subtitle: "GET IN TOUCH",
+                contact_title: "Let's Build Resilient Systems Together",
+                contact_desc: "Whether you need to scale your backend API, optimize an Odoo deployment, or transition to modern AI-driven developer workflows, feel free to reach out!"
+            },
+            es: {
+                nav_stack: "Tecnologías",
+                nav_ai: "Agentes & IA",
+                nav_exp: "Experiencia",
+                view_cv: "Ver CV",
+                hero_title_prefix: "Hola, soy",
+                hero_title_suffix: "Ingeniero Senior de Backend e Infraestructura",
+                hero_bio_1: "Con más de ",
+                hero_bio_exp: "10 años de experiencia técnica práctica",
+                hero_bio_2: ", diseño arquitecturas backend resilientes, APIs de alta concurrencia (Python, FastAPI, Django) e infraestructura multicloud sin tiempo de inactividad (AWS, GCP, Docker, Linux).",
+                hero_bio_3: "Especializado en escalar ecosistemas empresariales (Odoo 16, Doodba, queue-job, Holded, HubSpot), flujos financieros/facturación complejos, integraciones API y herramientas de desarrollo impulsadas por IA (Claude Terminal, Codex, Gemini, conexiones MCP).",
+                btn_get_in_touch: "Contactar",
+                btn_explore_systems: "Explorar Sistemas",
+                card_1_title: "Años de Experiencia",
+                card_1_desc: "Sistemas backend, arquitectura y excelencia DevOps.",
+                card_2_title: "Infra Multicloud",
+                card_2_desc: "Docker, Linux, Nginx, CI/CD y queue-job.",
+                card_3_title: "Stack Empresarial",
+                card_3_desc: "Contenedores Doodba, APIs Holded y HubSpot.",
+                card_4_title: "Flujos con IA",
+                card_4_desc: "Claude CLI, Codex, servidores MCP y agentes.",
+                stack_subtitle: "COMPETENCIAS CLAVE",
+                stack_title: "Ecosistema Tecnológico",
+                stack_desc: "Stack probado durante más de una década construyendo microservicios escalables, extensiones ERP y plataformas cloud.",
+                ai_badge: "FLUJOS DE TRABAJO CON IA",
+                ai_title: "Acelerando el Desarrollo con Agentes IA",
+                ai_desc: "Uso herramientas avanzadas de IA (Claude Code CLI, Gemini, Model Context Protocol) para potenciar la productividad, automatizar refactorizaciones complejas y mantener código de infraestructura limpio.",
+                ai_f1_title: "Integración de Servidores MCP",
+                ai_f1_desc: "Conexión de asistentes IA directamente a bases de datos locales y repositorios para contexto inmediato.",
+                ai_f2_title: "Pruebas Automatizadas",
+                ai_f2_desc: "Generación automática de suites con pytest y mocks para casos límite.",
+                exp_subtitle: "TRAYECTORIA PROFESIONAL",
+                exp_title: "Experiencia Profesional",
+                exp_qida_1: "Diseño de microservicios Python/FastAPI de alto rendimiento para lógica de negocio central.",
+                exp_qida_2: "Arquitectura de módulos Odoo 16 Enterprise con Doodba, queue-job para tareas asíncronas y optimización en PostgreSQL.",
+                exp_qida_3: "Desarrollo de conectores API a medida para Holded y HubSpot, agilizando facturación y sincronización CRM.",
+                exp_qida_4: "Gestión de infraestructura Linux en la nube (AWS/GCP), Docker, proxies Nginx y despliegues CI/CD con alta disponibilidad.",
+                exp_prev_desc: "Más de 9 años liderando desarrollo de software backend, ERPs, migraciones de bases de datos y APIs REST/GraphQL.",
+                contact_subtitle: "CONTACTO",
+                contact_title: "Construyamos Sistemas Resilientes",
+                contact_desc: "Ya sea para escalar tus APIs backend, optimizar una instalación de Odoo o integrar flujos de trabajo con IA, ¡contáctame!"
+            }
+        };
+
+        // Language Switcher Function
+        function setLanguage(lang) {
+            const btnEn = document.getElementById('lang-en');
+            const btnEs = document.getElementById('lang-es');
+
+            if (lang === 'es') {
+                btnEs.className = "px-2.5 py-1 rounded-md bg-emerald-500 text-slate-950 font-bold transition-all";
+                btnEn.className = "px-2.5 py-1 rounded-md text-slate-400 hover:text-slate-100 transition-all";
+            } else {
+                btnEn.className = "px-2.5 py-1 rounded-md bg-emerald-500 text-slate-950 font-bold transition-all";
+                btnEs.className = "px-2.5 py-1 rounded-md text-slate-400 hover:text-slate-100 transition-all";
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+        }
+    </script>
+</body>
+</html>
