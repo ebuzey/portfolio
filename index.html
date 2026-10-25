@@ -559,7 +559,7 @@
                         <i class="fa-solid fa-file-pdf"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-slate-100 text-base">Emanuel_Buzey_CV.pdf</h3>
+                        <h3 class="font-bold text-slate-100 text-base" data-i18n="cv_filename">Emanuel_Buzey_CV_EN.pdf</h3>
                         <p class="text-xs text-slate-400">Senior Backend & Infrastructure Engineer</p>
                     </div>
                 </div>
@@ -612,7 +612,7 @@
             <!-- Modal Footer -->
             <div class="p-4 border-t border-slate-800 bg-slate-950/50 flex items-center justify-end gap-3">
                 <button onclick="toggleModal(false)" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Close</button>
-                <a href="./Emanuel_Buzey_CV.pdf" download="Emanuel_Buzey_CV.pdf" onclick="toggleModal(false)" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold flex items-center gap-2">
+                <a id="cv-download" href="./Emanuel_Buzey_CV_EN.pdf" download="Emanuel_Buzey_CV_EN.pdf" onclick="toggleModal(false)" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold flex items-center gap-2">
                     <i class="fa-solid fa-download"></i>
                     <span data-i18n="download_cv">Download Full CV</span>
                 </a>
@@ -693,6 +693,7 @@
                 nav_exp: "Experience",
                 view_cv: "View CV",
                 download_cv: "Download Full CV",
+                cv_filename: "Emanuel_Buzey_CV_EN.pdf",
                 hero_title_prefix: "Hi, I'm",
                 hero_title_suffix: "Senior Backend & Infrastructure Engineer",
                 hero_bio_1: "With ",
@@ -758,6 +759,7 @@
                 nav_exp: "Experiencia",
                 view_cv: "Ver CV",
                 download_cv: "Descargar CV completo",
+                cv_filename: "Emanuel_Buzey_CV_ES.pdf",
                 hero_title_prefix: "Hola, soy",
                 hero_title_suffix: "Ingeniero Senior de Backend e Infraestructura",
                 hero_bio_1: "Con más de ",
@@ -823,6 +825,11 @@
         function setLanguage(lang) {
             const btnEn = document.getElementById('lang-en');
             const btnEs = document.getElementById('lang-es');
+            const cvDownload = document.getElementById('cv-download');
+            const cvFilename = lang === 'es' ? 'Emanuel_Buzey_CV_ES.pdf' : 'Emanuel_Buzey_CV_EN.pdf';
+
+            cvDownload.href = './' + cvFilename;
+            cvDownload.download = cvFilename;
 
             if (lang === 'es') {
                 btnEs.className = "px-2.5 py-1 rounded-md bg-emerald-500 text-slate-950 font-bold transition-all";
